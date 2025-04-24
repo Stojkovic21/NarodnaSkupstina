@@ -15,7 +15,7 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<NarodniPoslanik> sviNarodniPoslanici = from o in s.Query<NarodniPoslanik>()
-                                                                            select o;
+                                                                   select o;
 
                 foreach (NarodniPoslanik p in sviNarodniPoslanici)
                 {
@@ -86,29 +86,29 @@ namespace NarodnaSkupstina
 
             return Poslanici;
         }
-        public static void DodajPoslanika(NarodniPoslanikWork np) 
+        public static void DodajPoslanika(NarodniPoslanikWork np)
         {
             try
             {
                 ISession s = DataLayer.GetSession();
                 NarodniPoslanik poslanik = new NarodniPoslanik();
-                poslanik.JMBG=np.JMBG;
+                poslanik.JMBG = np.JMBG;
                 poslanik.Ime = np.Ime;
-                poslanik.Prezime= np.Prezime;
-                poslanik.ImeRoditelja=np.ImeRoditelja;
+                poslanik.Prezime = np.Prezime;
+                poslanik.ImeRoditelja = np.ImeRoditelja;
                 poslanik.DatumRodjenja = np.DatumRodjenja;
                 poslanik.MestoRodjenja = np.MestoRodjenja;
-                poslanik.MestoStanovanja=np.MestoStanovanja;
+                poslanik.MestoStanovanja = np.MestoStanovanja;
                 poslanik.AdresaStanovanja = np.AdresaStanovanja;
-                poslanik.BrojTelefona=np.BrojTelefona;
-                poslanik.BrojTelefona2=np.BrojTelefona2;
+                poslanik.BrojTelefona = np.BrojTelefona;
+                poslanik.BrojTelefona2 = np.BrojTelefona2;
                 poslanik.IzbornaLista = np.IzbornaLista;
-                poslanik.StalniRadniOdnos=np.StalniRadniOdnos;
+                poslanik.StalniRadniOdnos = np.StalniRadniOdnos;
                 poslanik.BrojRadneKnjizice = np.BrojRadneKnjizice;
-                poslanik.PrethodnoRadnoMesto=np.PrethodnoRadnoMesto;
-                poslanik.Godine=np.Godine;
-                poslanik.Meseci=np.Meseci;
-                poslanik.Dani=np.Dani;
+                poslanik.PrethodnoRadnoMesto = np.PrethodnoRadnoMesto;
+                poslanik.Godine = np.Godine;
+                poslanik.Meseci = np.Meseci;
+                poslanik.Dani = np.Dani;
 
                 s.SaveOrUpdate(poslanik);
                 s.Flush();
@@ -156,13 +156,13 @@ namespace NarodnaSkupstina
         }
         public static List<long> PosaljiJMBG()
         {
-            List<long> jmbgs= new List<long>();
+            List<long> jmbgs = new List<long>();
             try
             {
                 ISession s = DataLayer.GetSession();
 
-                IEnumerable<NarodniPoslanik>sviNarodniPoslanici=from o in s.Query<NarodniPoslanik>()
-                                                                select o;
+                IEnumerable<NarodniPoslanik> sviNarodniPoslanici = from o in s.Query<NarodniPoslanik>()
+                                                                   select o;
 
                 foreach (var item in sviNarodniPoslanici)
                 {
@@ -199,20 +199,20 @@ namespace NarodnaSkupstina
 
             return jmbgs;
         }
-        public static List<long> PoslaniciUOrganizaciji(int idOrganizacije)
+        public static List<NarodniPoslanik> PoslaniciUOrganizaciji(int idOrganizacije)
         {
-            List<long> jmbgs = new List<long>();
+            List<NarodniPoslanik> poslanici = new List<NarodniPoslanik>();
             try
             {
                 ISession s = DataLayer.GetSession();
 
-                IEnumerable<long> sviNarodniPoslanici = from o in s.Query<NarodniPoslanik>()
-                                                        where o.PripadaOrganizaciji.Id == idOrganizacije
-                                                        select o.JMBG;
+                IEnumerable<NarodniPoslanik> sviNarodniPoslanici = from o in s.Query<NarodniPoslanik>()
+                                                                   where o.PripadaOrganizaciji.Id == idOrganizacije
+                                                                   select o;
 
                 foreach (var item in sviNarodniPoslanici)
                 {
-                    jmbgs.Add(item);
+                    poslanici.Add(item);
                 }
             }
             catch (Exception ex)
@@ -220,7 +220,7 @@ namespace NarodnaSkupstina
                 throw;
             }
 
-            return jmbgs;
+            return poslanici;
         }
         public static void ObrisiPoslanika(long jmbg)
         {
@@ -229,7 +229,7 @@ namespace NarodnaSkupstina
                 ISession session = DataLayer.GetSession();
                 NarodniPoslanik narodniPoslanik = session.Load<NarodniPoslanik>(JedanPoslanik(jmbg).Id);
                 Organizacija organizacija = session.Load<Organizacija>(JedanPoslanik(jmbg).IdOrganizacije);
-                if(organizacija.Id != 0) 
+                if (organizacija.Id != 0)
                 {
                     if ((narodniPoslanik != narodniPoslanik.PripadaOrganizaciji.IdPredsednika) && (narodniPoslanik != narodniPoslanik.PripadaOrganizaciji.IdZamenikaPredsednika))
                     {
@@ -259,8 +259,8 @@ namespace NarodnaSkupstina
                 {
                     session.Delete(narodniPoslanik);
                 }
-                    session.Flush();
-                    session.Close();
+                session.Flush();
+                session.Close();
             }
             catch (Exception ex)
             {
@@ -268,7 +268,7 @@ namespace NarodnaSkupstina
                 throw;
             }
         }
-        
+
         #endregion
         #region Organizacije
         public static List<OrganizacijePregled> VratiSveOrganizacije()
@@ -279,11 +279,11 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<Organizacija> sveOrganicacije = from o in s.Query<Organizacija>()
-                                                                   select o;
+                                                            select o;
 
                 foreach (Organizacija p in sveOrganicacije)
                 {
-                    Organizacije.Add(new OrganizacijePregled(p.Id, p.Ime,p.IdPredsednika.Ime,p.IdPredsednika.Prezime, p.Tip,p.BrojClanova));
+                    Organizacije.Add(new OrganizacijePregled(p.Id, p.Ime, p.IdPredsednika.Ime, p.IdPredsednika.Prezime, p.Tip, p.BrojClanova));
                 }
 
                 s.Close();
@@ -302,7 +302,7 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<string> sveOrganicacije = from o in s.Query<Organizacija>()
-                                                            select o.Ime;
+                                                      select o.Ime;
 
                 foreach (var p in sveOrganicacije)
                 {
@@ -325,8 +325,8 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<Organizacija> sveOrganizacije = from o in s.Query<Organizacija>()
-                                                                   where o.Ime == ime
-                                                                   select o;
+                                                            where o.Ime == ime
+                                                            select o;
 
                 foreach (Organizacija p in sveOrganizacije)
                 {
@@ -344,18 +344,18 @@ namespace NarodnaSkupstina
         }
         public static int IdOrganizacije(string ime)
         {
-            int id=0;
+            int id = 0;
             try
             {
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<int> sveOrganizacije = from o in s.Query<Organizacija>()
-                                                            where o.Ime == ime
-                                                            select o.Id;
+                                                   where o.Ime == ime
+                                                   select o.Id;
 
                 foreach (var p in sveOrganizacije)
                 {
-                    id= p;
+                    id = p;
                 }
 
                 s.Close();
@@ -371,10 +371,10 @@ namespace NarodnaSkupstina
         {
             try
             {
-                ISession s=DataLayer.GetSession();
+                ISession s = DataLayer.GetSession();
                 Organizacija o = new Organizacija();
                 o.Ime = orga.Ime;
-                o.Tip=orga.Tip;
+                o.Tip = orga.Tip;
                 o.IdPredsednika = JedanPoslanik(orga.PredsednikId);
                 o.IdZamenikaPredsednika = JedanPoslanik(orga.ZamenikPredsednikaId);
 
@@ -388,14 +388,14 @@ namespace NarodnaSkupstina
                 throw;
             }
         }
-        public static void IzmeniOrganizaciju(int id,OrganizacijaWork orga)
+        public static void IzmeniOrganizaciju(int id, OrganizacijaWork orga)
         {
             try
             {
-                ISession session=DataLayer.GetSession();
+                ISession session = DataLayer.GetSession();
                 Organizacija o = session.Load<Organizacija>(id);
                 o.Ime = orga.Ime;
-                o.Tip=orga.Tip;
+                o.Tip = orga.Tip;
 
                 session.Save(o);
                 session.Flush();
@@ -406,18 +406,18 @@ namespace NarodnaSkupstina
                 throw;
             }
         }
-        public static void DodajClanaOrganizacije(string ime,long jmbg) 
+        public static void DodajClanaOrganizacije(string ime, long jmbg)
         {
             try
             {
-                ISession s=DataLayer.GetSession();
-                NarodniPoslanik poslanik=s.Load<NarodniPoslanik>(JedanPoslanik(jmbg).Id);
-                Organizacija organizacija=s.Load<Organizacija>( JednaOrganizacija(ime).Id);
+                ISession s = DataLayer.GetSession();
+                NarodniPoslanik poslanik = s.Load<NarodniPoslanik>(JedanPoslanik(jmbg).Id);
+                Organizacija organizacija = s.Load<Organizacija>(JednaOrganizacija(ime).Id);
                 organizacija.NarodniPoslanici.Add(poslanik);
                 poslanik.PripadaOrganizaciji = organizacija;
                 organizacija.BrojClanova++;
 
-                s.Save(organizacija); 
+                s.Save(organizacija);
                 s.Flush();
                 s.Close();
             }
@@ -452,8 +452,8 @@ namespace NarodnaSkupstina
         {
             try
             {
-                ISession session= DataLayer.GetSession();
-                Organizacija organizacija=session.Load<Organizacija>(id);
+                ISession session = DataLayer.GetSession();
+                Organizacija organizacija = session.Load<Organizacija>(id);
                 foreach (var item in organizacija.NarodniPoslanici)
                 {
                     NarodniPoslanik poslanik = session.Load<NarodniPoslanik>(item.Id);
@@ -475,22 +475,22 @@ namespace NarodnaSkupstina
                 throw;
             }
         }
-        public static void PromeniPredsednika(string imeOrganizacije,long jmbgPredsednika=0,long jmbgZamenikaPredsednika=0)
+        public static void PromeniPredsednika(string imeOrganizacije, long jmbgPredsednika = 0, long jmbgZamenikaPredsednika = 0)
         {
             try
             {
                 int id = JednaOrganizacija(imeOrganizacije).Id;
                 ISession session = DataLayer.GetSession();
                 Organizacija organizacija = session.Load<Organizacija>(id);
-                if(jmbgPredsednika>0)
+                if (jmbgPredsednika > 0)
                 {
                     NarodniPoslanik predsednik = session.Load<NarodniPoslanik>(JedanPoslanik(jmbgPredsednika).Id);
                     organizacija.IdPredsednika = predsednik;
                 }
-                if (jmbgZamenikaPredsednika>0)
+                if (jmbgZamenikaPredsednika > 0)
                 {
                     NarodniPoslanik zamenikPredsednik = session.Load<NarodniPoslanik>(JedanPoslanik(jmbgZamenikaPredsednika).Id);
-                    organizacija.IdZamenikaPredsednika= zamenikPredsednik;
+                    organizacija.IdZamenikaPredsednika = zamenikPredsednik;
                 }
 
                 session.Update(organizacija);
@@ -513,7 +513,7 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<Sednica> sveSednice = from o in s.Query<Sednica>()
-                                                                   select o;
+                                                  select o;
 
                 foreach (Sednica p in sveSednice)
                 {
@@ -532,16 +532,16 @@ namespace NarodnaSkupstina
         {
             try
             {
-                ISession session=DataLayer.GetSession();
+                ISession session = DataLayer.GetSession();
                 Sednica novaSednica = new Sednica();
 
                 novaSednica.DatumPocetka = sednica.DatumPocetka;
                 novaSednica.DatumZavrsetka = sednica.DatumZavrsetka;
                 novaSednica.BrojSaziva = sednica.BrojSaziva;
                 novaSednica.BrojZasedanja = sednica.BrojZasedanja;
-                novaSednica.Tip=sednica.Tip;
-                novaSednica.KoSaziva=sednica.KoSaziva;
-                
+                novaSednica.Tip = sednica.Tip;
+                novaSednica.KoSaziva = sednica.KoSaziva;
+
                 session.Save(novaSednica);
                 session.Flush();
                 session.Close();
@@ -589,7 +589,7 @@ namespace NarodnaSkupstina
                 predlozio.SazivaSednice.Add(sazivaSeSednica);
                 novaSednica.SazivaSednice.Add(sazivaSeSednica);
                 session.Save(predlozio);
-                
+
                 session.Flush();
                 session.Close();
             }
@@ -617,22 +617,22 @@ namespace NarodnaSkupstina
         public static List<NarodniPoslanikPregled> PoslaniciKojiSazivajuSednicu(int idSednice)
         {
             List<NarodniPoslanikPregled> Poslanici = new List<NarodniPoslanikPregled>();
-            Sednica sednica= new Sednica();
+            Sednica sednica = new Sednica();
             try
             {
                 ISession session = DataLayer.GetSession();
 
                 IEnumerable<Sednica> s = from o in session.Query<Sednica>()
-                                                           where o.Id == idSednice
-                                                           select o;
+                                         where o.Id == idSednice
+                                         select o;
 
                 foreach (var item in s)
                 {
-                    sednica=item;
+                    sednica = item;
                 }
                 foreach (var item in sednica.SazivaSednice)
                 {
-                    Poslanici.Add(new NarodniPoslanikPregled(item.IdPoslanika.JMBG, item.IdPoslanika.Ime, item.IdPoslanika.Prezime, item.IdPoslanika.BrojTelefona, item.IdPoslanika .IzbornaLista));
+                    Poslanici.Add(new NarodniPoslanikPregled(item.IdPoslanika.JMBG, item.IdPoslanika.Ime, item.IdPoslanika.Prezime, item.IdPoslanika.BrojTelefona, item.IdPoslanika.IzbornaLista));
                 }
 
                 session.Close();
@@ -680,7 +680,7 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<PravniAkt> sveSednice = from o in s.Query<PravniAkt>()
-                                                  select o;
+                                                    select o;
 
                 foreach (var p in sveSednice)
                 {
@@ -699,7 +699,7 @@ namespace NarodnaSkupstina
         {
             try
             {
-                ISession session= DataLayer.GetSession();
+                ISession session = DataLayer.GetSession();
                 PravniAkt novAkt = new PravniAkt();
 
                 novAkt.Tema = akt.Tema;
@@ -716,7 +716,7 @@ namespace NarodnaSkupstina
                 throw;
             }
         }
-        public static void IzmeniAkt(int idAkta,PravniAktWork akt)
+        public static void IzmeniAkt(int idAkta, PravniAktWork akt)
         {
             try
             {
@@ -746,7 +746,7 @@ namespace NarodnaSkupstina
 
                 foreach (var item in obrisiAkt.PredlazuAkt)
                 {
-                    PredlaganjeAkta predlaze=session.Load<PredlaganjeAkta>(item);
+                    PredlaganjeAkta predlaze = session.Load<PredlaganjeAkta>(item);
                     predlaze.IdAkta = null;
                     session.Update(predlaze);
                 }
@@ -765,11 +765,11 @@ namespace NarodnaSkupstina
         {
             try
             {
-                ISession session= DataLayer.GetSession();
+                ISession session = DataLayer.GetSession();
                 PravniAkt noviAkt = session.Load<PravniAkt>(PoslednjiDodatAkt());
                 foreach (var item in poslanici)
                 {
-                    PredlaganjeAkta predlazeSeAkt=new PredlaganjeAkta();
+                    PredlaganjeAkta predlazeSeAkt = new PredlaganjeAkta();
                     NarodniPoslanik predlozio = session.Load<NarodniPoslanik>(JedanPoslanik(item).Id);
                     predlazeSeAkt.IdPoslanika = predlozio;
                     predlazeSeAkt.IdAkta = noviAkt;
@@ -777,7 +777,7 @@ namespace NarodnaSkupstina
                     noviAkt.PredlazuAkt.Add(predlazeSeAkt);
                     session.Save(predlozio);
                 }
-                session.Flush(); 
+                session.Flush();
                 session.Close();
             }
             catch (Exception ex)
@@ -793,7 +793,7 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IQuery q = s.CreateQuery("select max(o.Id) from PravniAkt o");
-                id=q.UniqueResult<int>();
+                id = q.UniqueResult<int>();
             }
             catch (Exception ex)
             {
@@ -810,8 +810,8 @@ namespace NarodnaSkupstina
                 ISession session = DataLayer.GetSession();
 
                 IEnumerable<PravniAkt> s = from o in session.Query<PravniAkt>()
-                                         where o.Id == idAkta
-                                         select o;
+                                           where o.Id == idAkta
+                                           select o;
 
                 foreach (var item in s)
                 {
@@ -840,7 +840,7 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<SluzbeneProstorije> sveOrganicacije = from o in s.Query<SluzbeneProstorije>()
-                                                            select o;
+                                                                  select o;
 
                 foreach (var item in sveOrganicacije)
                 {
@@ -866,11 +866,11 @@ namespace NarodnaSkupstina
 
                 IEnumerable<int> sveOrganicacije = from o in s.Query<SluzbeneProstorije>()
                                                    where o.IdOrganizacije == null
-                                                                  select o.BrojProstorije;
+                                                   select o.BrojProstorije;
 
                 foreach (var item in sveOrganicacije)
                 {
-                        Organizacije.Add(item);
+                    Organizacije.Add(item);
                 }
                 s.Close();
             }
@@ -880,13 +880,13 @@ namespace NarodnaSkupstina
 
             return Organizacije;
         }
-        public static void DodeliProstoriju(int brojProstorije,string imeOrganizacije)
+        public static void DodeliProstoriju(int brojProstorije, string imeOrganizacije)
         {
             try
             {
                 ISession sessions = DataLayer.GetSession();
                 SluzbeneProstorije prostorija = sessions.Load<SluzbeneProstorije>(brojProstorije);
-                Organizacija orga=sessions.Load<Organizacija>(IdOrganizacije(imeOrganizacije));
+                Organizacija orga = sessions.Load<Organizacija>(IdOrganizacije(imeOrganizacije));
                 orga.SluzbeneProstorije.Add(prostorija);
                 prostorija.IdOrganizacije = orga;
                 sessions.Save(orga);
@@ -905,7 +905,7 @@ namespace NarodnaSkupstina
                 ISession session = DataLayer.GetSession();
                 SluzbeneProstorije sluzbeneProstorije = session.Load<SluzbeneProstorije>(id);
                 sluzbeneProstorije.IdOrganizacije.SluzbeneProstorije.Remove(sluzbeneProstorije);
-                sluzbeneProstorije.IdOrganizacije=null;
+                sluzbeneProstorije.IdOrganizacije = null;
 
                 session.Update(sluzbeneProstorije);
                 session.Flush();
@@ -936,7 +936,7 @@ namespace NarodnaSkupstina
                 throw;
             }
         }
-        public static void IzmeniSluzbenuProstoriji(int idSluzbeneProstorijeint,int brojProstorije, int sprat)
+        public static void IzmeniSluzbenuProstoriji(int idSluzbeneProstorijeint, int brojProstorije, int sprat)
         {
             try
             {
@@ -1000,12 +1000,12 @@ namespace NarodnaSkupstina
             return odrzaneSednice;
         }
 
-        public static void SazoviSednicu(DateTime datum,int idSednice,int brp) 
+        public static void SazoviSednicu(DateTime datum, int idSednice, int brp)
         {
             try
             {
                 ISession session = DataLayer.GetSession();
-                OdrzavanjeSednice odrz=new OdrzavanjeSednice();
+                OdrzavanjeSednice odrz = new OdrzavanjeSednice();
                 RadniDan radniDan = session.Load<RadniDan>(VratiRadniDanId(datum));
                 Sednica sednica = session.Load<Sednica>(idSednice);
                 if (radniDan.Id == 0)
@@ -1014,8 +1014,8 @@ namespace NarodnaSkupstina
                     radniDan = session.Load<RadniDan>(VratiRadniDanId(datum));
                 }
                 odrz.IdSednice = sednica;
-                odrz.IdDana= radniDan;
-                odrz.BrojPrisutnihPoslanika=brp;
+                odrz.IdDana = radniDan;
+                odrz.BrojPrisutnihPoslanika = brp;
                 sednica.OdrzavanjeSednice.Add(odrz);
                 radniDan.OdrzavanjeSednice.Add(odrz);
 
@@ -1029,7 +1029,7 @@ namespace NarodnaSkupstina
                 throw;
             }
         }
-        public static void IzmeniOdrzavanjeSednice(DateTime datum, int idSednice, int brp,int id)
+        public static void IzmeniOdrzavanjeSednice(DateTime datum, int idSednice, int brp, int id)
         {
             try
             {
@@ -1070,7 +1070,7 @@ namespace NarodnaSkupstina
                 radniDan.OdrzavanjeSednice.Remove(odrzanaSednica);
 
                 session.Delete(odrzanaSednica);
-                
+
                 session.Flush();
                 session.Close();
             }
@@ -1090,11 +1090,11 @@ namespace NarodnaSkupstina
                 ISession s = DataLayer.GetSession();
 
                 IEnumerable<RadniDan> sviNarodniPoslanici = from o in s.Query<RadniDan>()
-                                                                   select o;
+                                                            select o;
 
                 foreach (var p in sviNarodniPoslanici)
                 {
-                    RadniDani.Add(new RadniDan(p.Id,p.Datum, p.RadiDo, p.RadiDo));
+                    RadniDani.Add(new RadniDan(p.Id, p.Datum, p.RadiDo, p.RadiDo));
                 }
                 s.Close();
             }
@@ -1113,8 +1113,8 @@ namespace NarodnaSkupstina
                 ISession session = DataLayer.GetSession();
                 RadniDan novRadniDan = new RadniDan();
                 novRadniDan.Datum = datum;
-                novRadniDan.RadiOd =datum.Date+pocinje;
-                novRadniDan.RadiDo = datum.Date+zavrsavaSe;
+                novRadniDan.RadiOd = datum.Date + pocinje;
+                novRadniDan.RadiDo = datum.Date + zavrsavaSe;
 
                 session.Save(novRadniDan);
                 session.Flush();
@@ -1128,7 +1128,7 @@ namespace NarodnaSkupstina
         }
         public static int VratiRadniDanId(DateTime datum)
         {
-                int idDana=0;
+            int idDana = 0;
             try
             {
                 ISession session = DataLayer.GetSession();
